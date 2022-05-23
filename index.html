@@ -1,38 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Using Vue with a CDN (npm comes later)-->
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <!-- Link to bootstrap css-->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 </head>
 
 <body>
-  <div id="app" class="conatainer">
+  <!-- What will hold hello vue! by calling the id of "#app"-->
+  <div id="app" class="container">
     <div class="row">
       <div class="col mt-4">
+        <!-- calling hello vue inside of data-->
         {{ message }}
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.min.js"></script>
+  <!-- link to bootstrap-->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
     crossorigin="anonymous"></script>
     <script>
+      // Variable data that is holding "hello Vue" assigned to message
       let data = {
         message: "Hello, Vue!",
 
       }
-
+      // calling the function of data
       const vm = Vue.createApp({
         data() {
-          return data;
+          return data; // returning the message inside of data
         }
-      }).mount("#app");
+      }).mount("#app"); // mounting the app to launch message onto screen
     </script>
 </body>
 
