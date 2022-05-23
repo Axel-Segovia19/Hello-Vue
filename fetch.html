@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div id="app"> 
+          <h1 class="mt-5">Books: {{books.results.length}}</h1> <!-- this shows the amount of books displayed on the screen -->
+          <ul>
+            <!-- this is to show and bind the json info by id and by item-->
+            <book-item
+              v-for:="item in books.results" 
+              v-bind:book="item"
+              v-bind:key="item.id"
+              v-bind:id="item.id"
+              @removeBook="removeBook"
+            ></book-item>
+            <!-- @removeBook="removeBook" lets book item know it has the ability to do a remove function-->
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.min.js"></script>
+
+  <script>
+
+      // make a component to display books in a list 
+    const BookItem = {
+      props: ["book"],
+      template: `
+        <li class="list-group-item d-flex justify-content-bewtween align-items-start">
+          <div class="ms-2 me-auto">
+              <div class="fw-bold"> {{ book.title }}</div>
+              {{book.authors[0].name }}
+          </div>
+          <span>
+            <a href="#!" @click="$emit('removebook', book.id)">
+              <i class="bi bi-trash"></i>
+            </a>
+          </span>
+        </li>
+      `
+      // adding some interactivity to our list by adding a trash can icon from bootstrap next to the book 
+      // @click="$emit('removebook', book.id)" attaches the method/function to the trashcan icon by clicking it.
+    }
+
+    let data = {
+      books: { 
+        results: [],
+      }
+    }
+
+    // below we connected to a remote service, pulled down some json 
+    const vm = Vue.createApp({
+      data() {
+        return data
+      },
+      components: {
+        'book-item': BookItem, // calling the component
+      },
+      // this is allowing us to remove a book from our list of json data returns data on the list without book we just deleted
+      methods: {
+          removeBook(id) {
+            console.log("Removing", id);
+            this.books.results = this.books.results.filter(function (item) {
+              return item.id != id;
+            })
+          }
+      },
+      mounted() {
+        console.log("mounted");
+        fetch("https://gutendex.com/books/") // gets info from this website json data
+        .then(response => response.json()) // get the response fro the server and convert it to json
+        .then(data => { // storing that data once its back from the server 
+          this.books = data; // stored the data in this.books which is within the let data variable
+          for(let i= 0 ;i < this.books.results.length; i++) { // iterating through the data with a for loop
+            console.log("id", this.books.results[i].id, "title", this.books.results[i].title);
+          }
+        })
+      }
+
+    }).mount("#app");
+  </script>
+</body>
+</html>

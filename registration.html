@@ -1,0 +1,50 @@
+<!-- THIS IS DOING THE SAME THING AS INDEX HTML BUT REFERENCING CODE FROM OTHER FILES HOLDING JS CODE-->
+<!-- Nesting Components-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- bootstrap css-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <!-- calling app from .mount-->
+          <div id="app">
+            <!-- calling regform from components-->
+            <reg-form :items="items"></reg-form>
+            <!-- make sure to pass :items props to div element to display-->
+          </div>
+        </div>
+      </div>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.2.36/dist/vue.global.min.js"></script>
+  <script src="forms.js"></script> <!-- THIS CALLS JS CODE FROM forms.js-->
+  <script src="registration-form.js"></script> <!-- THIS CALLS JS CODE FROM registration-form.js -->
+
+  <script>
+    const data = {
+      items: [ // values we are giving to show up in the select component
+        {text: "Red", value: "red"},
+        {text: "Green", value: "green"},
+        {text: "Blue", value: "blue"},
+      ]
+    }
+
+    const vm = Vue.createApp({
+      data() {
+        return data;
+      },
+      components: {
+        'reg-form': RegistrationForm // 'reg-form' can be any name you want to give it as long as it it pointing to the correct function
+      } // no need to add in text-input since you are already calling it in your RegistrationForm
+    }).mount("#app")
+  </script>
+</body>
+</html>
